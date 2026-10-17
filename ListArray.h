@@ -2,6 +2,7 @@
 #include <ostream>
 #include <stdexcept>
 #include "List.h"
+
 template <typename T>
 class ListArray : public List<T>{
 	private:
@@ -20,14 +21,74 @@ class ListArray : public List<T>{
 		}
 		T operator[](int pos){
 			if(pos>=n||pos<0){
-				throw;
-				std::out_of_range("Posicion no valida");
+				throw std::out_of_range("Posicion no valida");
 			}
 			return arr[pos];
 		}
 		friend std::ostream&
-		operator<<(std::ostream& out,
+		operator<< (std::ostream& out,
 		ListArray<T> &list);
+		void insert(int pos,T e) override{
+                        if(pos<0||pos>=n){
+                                throw std::out_of_range("Posicion no valida");
+                        }
+                        resize(max+1);
+                        for(int i=n-1;i==pos;i--){
+                                arr[i]=arr[i-1];
+                        }
+                        arr[pos]=e;
+                }
+		void append(T e) override{
+                        resize(max+1);
+                        arr[max]=e;
+			n++;
+                }
+                void prepend(T e) override{
+                        resize(max+1);
+                        for(int i=max;i>0;i--){
+                                arr[i]=arr[i-1];
+                        }
+                        arr[0]=e;
+                }
+                T remove(int pos) override{
+                        T dat=arr[pos];
+                        for(int i=pos;i<max-1;i++){
+                                arr[i]=arr[i+1];
+                        }
+                        n--;
+                        return dat;
+                }
+                T get(int pos) override{
+                        if(pos<0||pos>=n){
+                                throw std::out_of_range("Posicion no valida");
+                        }
+                        T dat=arr[pos];
+                        return dat;
+                }
+                int search(T e){
+                        int i=0;
+                        T prob;
+                        while(prob!=e||i>max){
+                                prob=arr[i];
+                                i++;
+			}
+			if(prob==e){
+                                return i;
+                        }else{
+                                return -1;
+                                }
+                        }
+                bool empty() override{
+                        if(n==0){
+                                return true;
+                        }else{
+                                return false;
+                        }
+                }
+                int size() override{
+                        return max;
+                }
+
 	private:
 		void resize(int new_size){
 			T* nuevoArray= new T[new_size];
@@ -38,4 +99,14 @@ class ListArray : public List<T>{
 			arr=nuevoArray;
 			max= new_size;
 		}
+			
 };
+template <typename T>
+std::ostream& operator<<(std::ostream&
+		out,ListArray<T>& llist){
+	for(int i=0;i<llist.n;i++){
+		out << llist.arr[i]<<"";
+	}
+	return out;
+}
+

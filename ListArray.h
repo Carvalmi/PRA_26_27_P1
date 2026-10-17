@@ -31,7 +31,7 @@ class ListArray : public List<T>{
 		friend std::ostream&
 		operator<< <T>(std::ostream& out,ListArray<T> &list);
 		void insert(int pos,T e) override{
-                        if(pos<0||pos>=n){
+                        if(pos<0||pos>n){
                                 throw std::out_of_range("Posicion no valida");
                         }
                         resize(max+1);

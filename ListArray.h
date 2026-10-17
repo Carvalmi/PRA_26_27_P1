@@ -35,26 +35,33 @@ class ListArray : public List<T>{
                                 throw std::out_of_range("Posicion no valida");
                         }
                         resize(max+1);
-                        for(int i=n-1;i==pos;i--){
+                        for(int i=n-1;i>pos;i--){
                                 arr[i]=arr[i-1];
                         }
                         arr[pos]=e;
+			n++;
                 }
 		void append(T e) override{
-                        resize(max+1);
-                        arr[max]=e;
+                        if(n==max){
+				resize(max+1);
+			}
+			arr[n]=e;
 			n++;
                 }
                 void prepend(T e) override{
                         resize(max+1);
-                        for(int i=max;i>0;i--){
+                        for(int i=max-1;i>0;i--){
                                 arr[i]=arr[i-1];
                         }
                         arr[0]=e;
+			n++;
                 }
                 T remove(int pos) override{
+			if(pos<0||pos>=n){
+				throw std::out_of_range("Posicion invalida!");
+			}
                         T dat=arr[pos];
-                        for(int i=pos;i<max-1;i++){
+                        for(int i=pos;i<n-1;i++){
                                 arr[i]=arr[i+1];
                         }
                         n--;
@@ -69,10 +76,10 @@ class ListArray : public List<T>{
                 }
                 int search(T e){
                         int i=0;
-                        T prob;
-                        while(prob!=e||i>max){
-                                prob=arr[i];
+                        T prob=arr[i];
+                        while(prob!=e && i>n){
                                 i++;
+				prob=arr[i];
 			}
 			if(prob==e){
                                 return i;
@@ -88,7 +95,7 @@ class ListArray : public List<T>{
                         }
                 }
                 int size() override{
-                        return max;
+                        return n;
                 }
 
 	private:

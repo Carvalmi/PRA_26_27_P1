@@ -29,7 +29,7 @@ class ListArray : public List<T>{
 			return arr[pos];
 		}
 		friend std::ostream&
-		operator<< <T>(std::ostream& out,ListArray<T> &list);
+		operator<< <T>(std::ostream& out,ListArray<T> &llist);
 		void insert(int pos,T e) override{
                         if(pos<0||pos>n){
                                 throw std::out_of_range("Posicion no valida");
